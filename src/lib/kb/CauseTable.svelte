@@ -4,7 +4,8 @@
   import { groupByCause, readAs, ticketCause, uniqueById, type Report } from '#lib/kb/causes';
   import { tenantOf } from '#lib/kb/locales';
 
-  let { ticket }: { ticket: number } = $props();
+  // tickets: the ticket filed for a cause of its own, as a URL.
+  let { ticket, tickets = {} }: { ticket: number; tickets?: Partial<Record<string, string>> } = $props();
 
   const merged = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket));
   const groups = $derived(groupByCause(merged, tenantOf));
@@ -34,7 +35,9 @@
         <td class="tags">{tags(g)}</td>
         <td>{g.tenants}</td>
         <td>{g.firstSeen} → {g.lastSeen}</td>
-        <td>{g.cause === owner ? `#${ticket}` : 'not this ticket — no ticket of its own'}</td>
+        <td>
+          {#if tickets[g.cause]}<a href={tickets[g.cause]}>{tickets[g.cause]!.split('/').pop()?.replace(/^/, '#')}</a>{:else}{g.cause === owner ? `#${ticket}` : 'not this ticket — no ticket of its own'}{/if}
+        </td>
       </tr>
     {/each}
   </tbody>
@@ -43,7 +46,10 @@
 {#each groups as g (g.cause)}
   {@const moved = readAs(g, notes.oneDayMove)}
   {#if moved}
-    <p class="note">{moved} reports read as a one-day move; filed under <code>{g.cause}</code> by tenant.</p>
+    <p class="note">
+      {moved} reports read as a one-day move; filed under <code>{g.cause}</code> by tenant.
+      {#if tickets.shift}Tracked in <a href={tickets.shift}>{tickets.shift.split('/').pop()?.replace(/^/, '#')}</a>.{/if}
+    </p>
   {/if}
 {/each}
 

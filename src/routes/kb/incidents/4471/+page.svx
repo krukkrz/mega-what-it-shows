@@ -2,8 +2,8 @@
 layout: runbook
 title: '#4471 · dates parse mm/dd in eu locales'
 owner: support desk
-status: known
-reviewed: 2026-09-30
+status: split
+reviewed: 2026-10-28
 ---
 
 <script>
@@ -15,16 +15,19 @@ reviewed: 2026-09-30
 Since April, people have told us their bookings land on the wrong day: a month flipped. By
 4 October the desk had **412 reports**.
 
-**Merged as one issue.** The parser reads dates month first, and our tenants write the day
-first. The fix is queued.
+**Merged as one issue, but it holds three.** The parser reads dates month first, and our
+tenants write the day first: that fix is queued. Two more problems came in under the same
+subjects: booking-v3's date hint, and a one-day shift across time zones. Each has its own ticket
+now; see [three problems, not one](/kb/incidents/4471/problems).
 
-<Callout>
-Known. One issue, one fix queued.
+<Callout kind="warn">
+Split. The queued parser fix closes only the parser ticket. Keep #4471 open until all three
+tickets are closed.
 </Callout>
 
 ## What was merged
 
-<CauseTable ticket={4471} />
+<CauseTable ticket={4471} tickets={{ parser: 'https://github.com/krukkrz/mega-what-it-shows/issues/1', hint: 'https://github.com/krukkrz/mega-what-it-shows/issues/2', shift: 'https://github.com/krukkrz/mega-what-it-shows/issues/3' }} />
 
 ## Since April
 
@@ -32,5 +35,6 @@ Known. One issue, one fix queued.
 
 ## Lessons
 
-- A big ticket is mostly one bug reported many times. Merge early, count once.
+- A big ticket can be several bugs with one symptom. Merging on subject line hides them: check
+  the cause before you merge.
 - Write the page while the queue is still in your head.
