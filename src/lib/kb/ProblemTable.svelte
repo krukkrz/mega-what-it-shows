@@ -10,7 +10,8 @@
 
   const merged = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket));
   const groups = $derived(problemsOf(reports as Report[], ticket, tenantOf, notes.oneDayMove));
-  const counted = $derived(groups.reduce((n, g) => n + g.reports.length, 0));
+  // Every merged report must sit under at least one problem.
+  const counted = $derived(new Set(groups.flatMap((g) => g.reports.map((r) => r.id))).size);
   const tags = (g: { taggedAs: Record<string, number> }) =>
     Object.entries(g.taggedAs)
       .sort((a, b) => b[1] - a[1])

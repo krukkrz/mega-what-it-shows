@@ -21,8 +21,8 @@ subjects: booking-v3's date hint, and a one-day shift across time zones. Each ha
 now; see [three problems, not one](/kb/incidents/4471/problems).
 
 <Callout kind="warn">
-Split. The queued parser fix closes only the parser ticket. Keep #4471 open until all three
-tickets are closed.
+Split, and closed by engineering on 5 October: parser fixed, hint won't fix (booking-v3 form
+retired). The one-day shift has no fix yet; its ticket stays open.
 </Callout>
 
 ## What was merged

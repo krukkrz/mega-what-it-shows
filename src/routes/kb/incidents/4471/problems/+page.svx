@@ -13,12 +13,12 @@ signature: 'v1.eyJzdWIiOiIxMzI0IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpY
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 </script>
 
-[#4471](/kb/incidents/4471) is marked known: one issue, one fix queued. Its reports say otherwise.
-They come from three problems, and the queued parser fix closes only one of them.
+[#4471](/kb/incidents/4471) was marked known: one issue, one fix queued. Its reports say otherwise.
+They come from three problems, and the parser fix closed only one of them.
 
 <Callout kind="warn">
-Do not close #4471 when the parser fix ships. Each problem below has its own ticket now. Close
-each ticket when its own fix ships.
+Engineering closed #4471 on 5 October: parser fixed (fix(dates): parse dd/mm for eu locales),
+hint won't fix (booking-v3 form retired). Nothing has fixed shift: its ticket stays open.
 </Callout>
 
 ## What the reports show
@@ -26,14 +26,15 @@ each ticket when its own fix ships.
 <ProblemTable ticket={4471} issues={{ parser: 'https://github.com/krukkrz/mega-what-it-shows/issues/1', hint: 'https://github.com/krukkrz/mega-what-it-shows/issues/2', shift: 'https://github.com/krukkrz/mega-what-it-shows/issues/3' }} />
 
 - **`parser`**: the shared parser reads every date month first, and these tenants write the day
-  first. 7 April comes out as 4 July. This is the bug #4471 names.
+  first. 7 April comes out as 4 July. This is the bug #4471 names. **Fixed.**
 - **`hint`**: booking-v3's form prints `MM/DD/YYYY` under its date field, but it reads the date
   the tenant's way, day first. People type what the hint tells them, and the form swaps it. Only
-  form reports from booking-v3 tenants. The parser fix does not touch it: the form needs a hint
-  in the tenant's order.
+  form reports from booking-v3 tenants. The parser fix does not touch it. **Won't fix:** the
+  booking-v3 form is retired.
 - **`shift`**: the date is right and the day moves by one. Tuesday 12 May shows as Monday 11 May,
   a meeting reaches Lisbon on Tuesday and Toronto on Monday, an invite arrives before its booking.
-  That is a time-zone conversion, not a swap of day and month, so neither fix above ends it.
+  That is a time-zone conversion, not a swap of day and month, so neither change above ends it.
+  **Open.**
 
 ## How the count was made
 
@@ -42,8 +43,9 @@ each ticket when its own fix ships.
   its `hint` and `parser` tags disagree with the cause in both directions (the "intake tagged as"
   column).
 - The `shift` reports are the ones the desk itself read as one-day moves (`desk-notes.json`).
-  The #4471 page counted them under `parser` and footnoted them. Here they are a problem of their
-  own. The logic is in `src/lib/kb/problems.ts`.
+  They stay counted under `parser`, where their tenant files them, as in the desk's own view, and
+  they are a problem of their own too. So the rows add up to more than the reports. The logic is
+  in `src/lib/kb/problems.ts`.
 
 ## Why they were merged
 
