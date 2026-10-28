@@ -1,0 +1,1 @@
+export{n as component}from"../chunks/DPbrn_IR.js";

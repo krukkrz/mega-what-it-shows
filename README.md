@@ -34,3 +34,12 @@ Support desk. Decision records: whoever signed them.
 ---
 
 Exported 2026-10-04 from the `support` repo, `apps/kb/` → `src/`.
+
+## This repo
+
+MEGA.dev S01E03. The kb export above, plus one page:
+[`src/routes/kb/incidents/4471/problems/+page.svx`](src/routes/kb/incidents/4471/problems/+page.svx),
+rendered as the desk sees it in [`build/kb/incidents/4471/problems.html`](build/kb/incidents/4471/problems.html).
+One issue per problem in #4471: [#1 parser](../../issues/1), [#2 hint](../../issues/2), [#3 shift](../../issues/3).
+
+Build: `npm install && npm run build` (SvelteKit + mdsvex, static output in `build/`).

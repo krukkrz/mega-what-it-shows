@@ -1,0 +1,55 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: Krzysztof Kruk
+status: open
+reviewed: 2026-10-28
+signature: Krzysztof Kruk
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+[#4471](/kb/incidents/4471) is marked known: one issue, one fix queued. Its reports say otherwise.
+They come from three problems, and the queued parser fix closes only one of them.
+
+<Callout kind="warn">
+Do not close #4471 when the parser fix ships. Each problem below has its own ticket now. Close
+each ticket when its own fix ships.
+</Callout>
+
+## What the reports show
+
+<ProblemTable ticket={4471} issues={{ parser: 'https://github.com/krukkrz/mega-what-it-shows/issues/1', hint: 'https://github.com/krukkrz/mega-what-it-shows/issues/2', shift: 'https://github.com/krukkrz/mega-what-it-shows/issues/3' }} />
+
+- **`parser`**: the shared parser reads every date month first, and these tenants write the day
+  first. 7 April comes out as 4 July. This is the bug #4471 names.
+- **`hint`**: booking-v3's form prints `MM/DD/YYYY` under its date field, but it reads the date
+  the tenant's way, day first. People type what the hint tells them, and the form swaps it. Only
+  form reports from booking-v3 tenants. The parser fix does not touch it: the form needs a hint
+  in the tenant's order.
+- **`shift`**: the date is right and the day moves by one. Tuesday 12 May shows as Monday 11 May,
+  a meeting reaches Lisbon on Tuesday and Toronto on Monday, an invite arrives before its booking.
+  That is a time-zone conversion, not a swap of day and month, so neither fix above ends it.
+
+## How the count was made
+
+- One report per id: the export repeats some reports, and `uniqueById` drops the copies.
+- The cause comes from the tenant, not from intake. Intake tags from the reporter's browser, so
+  its `hint` and `parser` tags disagree with the cause in both directions (the "intake tagged as"
+  column).
+- The `shift` reports are the ones the desk itself read as one-day moves (`desk-notes.json`).
+  The #4471 page counted them under `parser` and footnoted them. Here they are a problem of their
+  own. The logic is in `src/lib/kb/problems.ts`.
+
+## Why they were merged
+
+[Decision 0001](/kb/decisions/0001-dedupe-by-subject) merges on subject line alone. Every
+report here has a subject about a wrong date, so three bugs with the same symptom became one
+ticket. The decision accepted that cost for different subjects about one bug. It did not plan
+for one subject over different bugs.
+
+<RenderStamp {signature} />
