@@ -4,7 +4,7 @@ title: '#4471 · three problems, not one'
 owner: Krzysztof Kruk
 status: open
 reviewed: 2026-10-28
-signature: Krzysztof Kruk
+signature: 'v1.eyJzdWIiOiIxMzI0IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMxNzAyNjQsImV4cCI6MTc5MzI1NjY2NH0.RQR0qQZqYxlsghygYUbGUXGEutwWULTJ2yElIfj0sXc'
 ---
 
 <script>
